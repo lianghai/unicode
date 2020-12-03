@@ -1,0 +1,27 @@
+---
+
+- cp: 0x178A
+  id: "DA"
+  variant_by_type:
+    base:
+      written_units: [.da]
+    coeng:
+      written_units: [.coeng-da]
+
+- cp: 0x178F
+  id: "TA"
+  variant_by_type:
+    base:
+      written_units: [.ta]
+    coeng:
+      written_units: [.coeng-da]
+
+- cp: 0x17C4
+  id: "SIGN-OO"
+  variant_by_type:
+    cmap:
+      written_units: [.sign-e, .placeholder-base, .sign-aa]
+    decomposition:
+      written_units: [.sign-e, .sign-aa]
+
+...
