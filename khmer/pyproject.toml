@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "khmer"
+version = "0.1.0"
+description = ""
+authors = ["Liang Hai <lianghai@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fonttools = "^4.17.1"
+PyYAML = "^5.3.1"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.8.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
