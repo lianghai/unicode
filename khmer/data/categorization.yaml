@@ -1,0 +1,65 @@
+---
+
+format_control:
+
+  conjoiner: [.Conjoiner]
+  joiner: [.Zwj]
+  non_joiner: [.Zwnj]
+
+akshara:
+
+  onset: [
+    .Ka, .Kha, .Ko, .Kho, .Ngo,
+    .Ca, .Cha, .Co, .Cho, .Nyo,
+    .Da, .Ttha, .Do, .Ttho, .Nna,
+    .Ta, .Tha, .To, .Tho, .No,
+    .Ba, .Pha, .Po, .Pho, .Mo,
+    .Yo, .Ro, .Lo, .Vo,
+    .Sha, .Ssa, .Sa, .Ha,
+    .La,
+    .Qa,
+  ]
+
+  nucleus: [
+     .Qi, .Qii, .Qu, .Quk, .Quu, .Quuv,
+     .Ry, .Ryy, .Ly, .Lyy,
+     .Qe, .Qai, .Qoo, .QooAlt, .Qau,
+  ]
+
+modifier:
+
+  onset:
+
+    prefixing: [.Robat]
+    series_altering: [.Muusekatoan, .Treisap]
+
+  nucleus:
+
+    specifying: [
+      .SignAa, .SignI, .SignIi, .SignY, .SignYy, .SignU, .SignUu, .SignUa,
+      .SignOe, .SignYa, .SignIe,
+      .SignE, .SignAe, .SignAi,
+      .SignOo, .SignAu,
+    ]
+
+    altering: [
+      .Bantak,  # shortening
+      .Ahsda,  # protecting
+      .Samyok,  # misc altering
+      .Viriam, .Atthacan,  # suppressing/protecting (obsolete)
+    ]
+
+  coda:
+
+    specifying: [
+      .Nikahit,  # m
+      .Reahmuk,  # h
+      .Yukaleakpintu  # ʔ
+    ]
+
+  misc: [
+    .Toandakhiat,  # silencing
+    .Kakabat,  # emphasizing
+  ]
+
+...

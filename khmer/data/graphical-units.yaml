@@ -1,0 +1,12 @@
+---
+
+- id: "da"
+  phonetic: [.Da]
+
+- id: "ta"
+  phonetic: [.Ta]
+
+- id: "coeng-da"
+  phonetic: [.Da, .Ta]
+
+...

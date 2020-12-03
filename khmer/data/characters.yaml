@@ -1,7 +1,7 @@
 ---
 
 - cp: 0x178A
-  id: "DA"
+  id: "Da"
   variant_by_type:
     base:
       written_units: [.da]
@@ -9,7 +9,7 @@
       written_units: [.coeng-da]
 
 - cp: 0x178F
-  id: "TA"
+  id: "Ta"
   variant_by_type:
     base:
       written_units: [.ta]
@@ -17,7 +17,7 @@
       written_units: [.coeng-da]
 
 - cp: 0x17C4
-  id: "SIGN-OO"
+  id: "SignOo"
   variant_by_type:
     cmap:
       written_units: [.sign-e, .placeholder-base, .sign-aa]
