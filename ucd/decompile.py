@@ -8,10 +8,10 @@ version = "14.0.0"
 
 for property_name in "IndicPositionalCategory", "IndicSyllabicCategory":
 
-    source = (directory / version / property_name).with_suffix(".txt")
+    path = directory / "references" / version / (property_name + ".txt")
 
     cps_to_value = dict[range, str]()
-    for line in source.read_text().splitlines():
+    for line in path.read_text().splitlines():
 
         if not (content := line.partition("#")[0].strip()):
             continue
@@ -32,7 +32,8 @@ for property_name in "IndicPositionalCategory", "IndicSyllabicCategory":
     #     int,
     #     lambda dumper, data: dumper.represent_scalar("tag:yaml.org,2002:int", f"0x{data:04X}"),
     # )
-    with source.with_suffix(".yaml").open("w") as f:
+    path = directory / "tests" / (property_name + ".yaml")
+    with path.open("w") as f:
         yaml.dump(
             {
                 k: {value: [{i: unicodedata.name(chr(i))} for i in cps] for value, cps in v.items()}
