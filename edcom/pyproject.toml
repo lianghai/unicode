@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "_"
+version = "0.0.0"
+description = ""
+authors = ["Liang Hai <lianghai@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+lxml = "^4.7.1"
+unicodedata2 = "^14.0.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+
+[tool]
+black = { line-length = 100 }
+isort = { profile = "black" }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
