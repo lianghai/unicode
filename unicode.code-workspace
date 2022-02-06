@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "ucd"
+		},
+		{
+			"path": "edcom"
+		}
+	],
+	"settings": {}
+}
