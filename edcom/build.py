@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import re
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
 import html5lib
+import unicodedata2
 from lxml.etree import _Element as Element
 
 TREE_TYPE = "lxml"
@@ -54,41 +56,96 @@ class Builder:
         match element.tag:
 
             case "char":
+                self.transform_char(element)
 
-                transformed = element.makeelement("span", {"class": "char"}, None)
-                transformed.text, transformed.tail = element.text, element.tail
+            case ("h1" | "figcaption" | "a") as tag if (mode := "numbering") in element.keys():
 
-                element.getparent().replace(element, transformed)
+                self.expand_placeholder_in_element(element, mode)
 
-            case "h1" | "figcaption" if (mode := "numbering") in element.keys():
+                if tag == "a":
 
-                self.expand_placeholder_text_in_element(element, mode)
+                    wrap = element.makeelement("cite", {}, None)
+                    wrap.tail, element.tail = element.tail, None  # type: ignore
 
-            case "a" if (mode := "referencing") in element.keys():
+                    element.getparent().replace(element, wrap)
+                    wrap.append(element)
 
-                self.expand_placeholder_text_in_element(element, mode)
+    PLACEHOLDER_MODE = Literal["numbering"]
 
-                wrap = element.makeelement("cite", {}, None)
-                wrap.tail, element.tail = element.tail, None  # type: ignore
+    def expand_placeholder_in_element(self, element: Element, /, mode: PLACEHOLDER_MODE = None):
 
-                element.getparent().replace(element, wrap)
-                wrap.append(element)
-
-    PLACEHOLDER_MODE = Literal["numbering", "referencing"]
-
-    def expand_placeholder_text_in_element(
-        self, element: Element, /, mode: PLACEHOLDER_MODE = None
-    ):
+        # TODO
 
         text: str = element.text
 
         if "X.X" in text:
-            text = text.replace("X.X", "1.1")  # TODO
+            text = text.replace("X.X", "1.1")
         elif "X-X" in text:
-            text = text.replace("X-X", "1-9")  # TODO
+            text = text.replace("X-X", "1-1")
 
         element.text = text  # type: ignore
         del element.attrib[mode]
+
+    def transform_char(self, element: Element, /):
+
+        char_placeholder_pattern = re.compile(
+            r"""
+                (
+                    (?P<u_plus> U\+ )?  # optional U+ prefix
+                    (
+                        (?P<code_point_placeholder> X{4} )  # XXXX as code point placeholder
+                        | (?P<code_point> 1?[0-9A-F]?[0-9A-F]{4} )  # or actual code point
+                    )
+                )?
+                (
+                    \s
+                    (?P<glyph_placeholder> \[X\] )  # [X] as glyph placeholder
+                )?
+                (
+                    \s
+                    (?P<name> [A-Z0-9 -]+ )  # actual name
+                )?
+            """,
+            flags=re.VERBOSE,
+        )
+
+        transformed: Element = element.makeelement("span", {"class": "character"}, None)
+        transformed.tail = element.tail  # type: ignore
+
+        text: str = element.text
+        element.getparent().replace(element, transformed)
+
+        if match := char_placeholder_pattern.fullmatch(text):
+
+            cps = set[int]()
+            if name := match.group("name"):
+                cps.add(ord(unicodedata2.lookup(name)))
+            if cp_notation := match.group("code_point"):
+                cps.add(int(cp_notation, 16))
+            if len(cps) != 1:
+                raise KeyError(text)
+            (cp,) = cps
+
+            if cp_notation or match.group("code_point_placeholder"):
+                child = transformed.makeelement("span", {"class": "code-point"}, None)
+                child.text = (match.group("u_plus") or "") + f"{cp:04X}"
+                transformed.append(child)
+            if match.group("glyph_placeholder"):
+                if len(transformed):
+                    transformed[-1].tail = " "
+                child = transformed.makeelement("span", {"class": "glyph"}, None)
+                child.text = chr(cp)
+                transformed.append(child)
+            if name:
+                if len(transformed):
+                    transformed[-1].tail = " "
+                child = transformed.makeelement(
+                    "span",
+                    {"class": "name", "style": "font-variant: all-small-caps;"},
+                    None,
+                )
+                child.text = name
+                transformed.append(child)
 
 
 if __name__ == "__main__":
