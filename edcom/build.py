@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
@@ -19,17 +21,18 @@ repo = Path(__file__).parent
 
 
 @dataclass
-class Source:
+class Builder:
 
-    directory: Path
     path_to_html: dict[Path, Element]
 
-    def __init__(self, directory: Path):
-        self.directory = directory
-        self.path_to_html = {
-            i.relative_to(self.directory): parser.parse(i.read_bytes())
-            for i in self.directory.rglob("*.html")
-        }
+    @classmethod
+    def from_source_dir(cls, directory: Path, /) -> Builder:
+        return cls(
+            path_to_html={
+                i.relative_to(directory): parser.parse(i.read_bytes())
+                for i in directory.rglob("*.html")
+            }
+        )
 
     def build(self, directory: Path):
 
@@ -89,4 +92,5 @@ class Source:
 
 
 if __name__ == "__main__":
-    Source(repo / "source").build(repo / "distribution")
+    builder = Builder.from_source_dir(repo / "source")
+    builder.build(repo / "distribution")
