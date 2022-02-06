@@ -1,6 +1,7 @@
 <meta charset=UTF-8>
+<link rel=stylesheet href="../../style.css">
 
-<h1>1.1 Unicode Design Principles</h1>
+<h1><span class=number>1.1</span> Unicode Design Principles</h1>
 
 <h2>Universality</h2>
 
@@ -18,7 +19,7 @@
 
 <p>The Unicode Standard avoids duplicate encoding of characters by unifying them within scripts across language. Common letters are given one code each, regardless of language, as are common Chinese/Japanese/Korean (CJK) ideographs. (See <cite><a href="../East Asia/Han.html">Section 1.1, Han</a></cite>.)</p>
 
-<p>Punctuation marks, symbols, and diacritics are handled in a similar manner as letters. If they can be clearly identified with a particular script, they are encoded once for that script and are unified across any languages that may use that script. See, for example, <span class=character><span class=code-point>U+1362</span> <span class=name style="font-variant: all-small-caps;">ETHIOPIC FULL STOP</span></span>, <span class=character><span class=code-point>U+060F</span> <span class=name style="font-variant: all-small-caps;">ARABIC SIGN MISRA</span></span>, and <span class=character><span class=code-point>U+0592</span> <span class=name style="font-variant: all-small-caps;">HEBREW ACCENT SEGOL</span></span>. However, some punctuation or diacritical marks may be shared in common across a number of scripts—the obvious example being Western-style punctuation characters, which are often recently added to the writing systems of scripts other than Latin. In such cases, characters are encoded only once and are intended for use with multiple scripts. Common symbols are also encoded only once and are not associated with any script in particular.</p>
+<p>Punctuation marks, symbols, and diacritics are handled in a similar manner as letters. If they can be clearly identified with a particular script, they are encoded once for that script and are unified across any languages that may use that script. See, for example, <span class=character><span class=code-point>U+1362</span> <span class=name>ETHIOPIC FULL STOP</span></span>, <span class=character><span class=code-point>U+060F</span> <span class=name>ARABIC SIGN MISRA</span></span>, and <span class=character><span class=code-point>U+0592</span> <span class=name>HEBREW ACCENT SEGOL</span></span>. However, some punctuation or diacritical marks may be shared in common across a number of scripts—the obvious example being Western-style punctuation characters, which are often recently added to the writing systems of scripts other than Latin. In such cases, characters are encoded only once and are intended for use with multiple scripts. Common symbols are also encoded only once and are not associated with any script in particular.</p>
 
 <p>It is quite normal for many characters to have different usages, such as <i>comma</i> “,” for either thousands-separator (English) or decimal-separator (French). The Unicode Standard avoids duplication of characters due to specific usage in different languages; rather, it duplicates characters <em>only</em> to support compatibility with base standards. Avoidance of duplicate encoding of characters is important to avoid visual ambiguity.</p>
 
@@ -29,9 +30,9 @@
 <p>In determining whether to unify variant CJK ideograph forms across standards, the Unicode Standard follows the principles described in <cite><a href="../East Asia/Han.html">Section 1.1, Han</a></cite>. Where these principles determine that two forms constitute a trivial difference, the Unicode Standard assigns a single code. Just as for the Latin and other scripts, typeface distinctions or local preferences in glyph shapes alone are not sufficient grounds for disunification of a character. <cite><a href=#figure-typeface-variation>Figure 1-1</a></cite> illustrates the well-known example of the CJK ideograph for “bone,” which shows significant shape differences from typeface to typeface, with some forms preferred in China and some in Japan. All of these forms are considered to be the same <em>character</em>, encoded at <span class=character><span class=code-point>U+9AA8</span></span> in the Unicode Standard.</p>
 
 <figure id=figure-typeface-variation>
-    <figcaption>Figure 1-1. Typeface Variation for the Bone Character</figcaption>
+    <figcaption><span class=number>Figure 1-1.</span> Typeface Variation for the Bone Character</figcaption>
     <!-- Just a quick hack below for the figure in this demo. We’re not gonna rely on client-side fonts for such figures. -->
-    <p style="font-size: xx-large;"><span lang=zh>骨</span> <span lang=ja>骨</span></p>
+    <p style="font-family: script; font-size: xx-large;"><span lang=zh-CN>骨</span> <span lang=zh-TW>骨</span></p>
 </figure>
 
 <p>Many characters in the Unicode Standard could have been unified with existing visually similar Unicode characters or could have been omitted in favor of some other Unicode mechanism for maintaining the kinds of text distinctions for which they were intended. However, considerations of interoperability with other standards and systems often require that such compatibility characters be included in the Unicode Standard. See <cite><a href="Compatibility Characters.html">Section 1.1, Compatibility Characters</a></cite>. In particular, whenever font style, size, positioning or precise glyph shape carry a specific meaning and are used in distinction to the ordinary character—for example, in phonetic or mathematical notation—the characters are not unified.</p>

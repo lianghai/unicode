@@ -58,17 +58,36 @@ class Builder:
             case "char":
                 self.transform_char(element)
 
-            case ("h1" | "figcaption" | "a") as tag if (mode := "numbering") in element.keys():
+            case _ if (mode := "numbering") in element.keys():
 
-                self.expand_placeholder_in_element(element, mode)
+                match element.tag:
 
-                if tag == "a":
+                    case "h1" | "figcaption":
 
-                    wrap = element.makeelement("cite", {}, None)
-                    wrap.tail, element.tail = element.tail, None  # type: ignore
+                        element.append(
+                            child := element.makeelement("span", {"class": "number"}, None)
+                        )
+                        text = element.text
+                        for placeholder in ["X.X", "Figure X-X."]:
+                            if placeholder in text:
+                                element.text = None  # type: ignore
+                                child.text = placeholder
+                                child.tail = text.replace(placeholder, "")
+                                break
 
-                    element.getparent().replace(element, wrap)
-                    wrap.append(element)
+                        self.expand_placeholder_in_element(child, mode)
+                        del element.attrib[mode]
+
+                    case "a":
+
+                        wrap = element.makeelement("cite", {}, None)
+                        wrap.tail, element.tail = element.tail, None  # type: ignore
+
+                        element.getparent().replace(element, wrap)
+                        wrap.append(element)
+
+                        self.expand_placeholder_in_element(element)
+                        del element.attrib[mode]
 
     PLACEHOLDER_MODE = Literal["numbering"]
 
@@ -84,7 +103,6 @@ class Builder:
             text = text.replace("X-X", "1-1")
 
         element.text = text  # type: ignore
-        del element.attrib[mode]
 
     def transform_char(self, element: Element, /):
 
@@ -139,11 +157,7 @@ class Builder:
             if name:
                 if len(transformed):
                     transformed[-1].tail = " "
-                child = transformed.makeelement(
-                    "span",
-                    {"class": "name", "style": "font-variant: all-small-caps;"},
-                    None,
-                )
+                child = transformed.makeelement("span", {"class": "name"}, None)
                 child.text = name
                 transformed.append(child)
 

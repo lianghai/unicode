@@ -1,0 +1,31 @@
+html {
+    padding: 1em;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 42em;
+}
+
+h1 .number, figcaption .number {
+    margin-right: .25em;
+}
+
+h2 {
+    font-style: italic;
+}
+
+figure {
+    text-align: center;
+}
+
+figcaption {
+    font-size: larger;
+}
+figcaption .number {
+    font-weight: bold;
+}
+
+span.character .name {
+    font-variant-caps: all-small-caps;
+}
